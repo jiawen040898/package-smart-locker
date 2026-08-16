@@ -45,10 +45,10 @@ describe('Smart Package Locker System (e2e)', () => {
     it('should create a new locker with location', () => {
       return request(app.getHttpServer())
         .post('/lockers')
-        .send({ id: 'L-100', size: 'SMALL', location: 'Building C, Basement' })
+        .send({ size: 'SMALL', location: 'Building C, Basement' })
         .expect(201)
         .expect((res) => {
-          expect(res.body.id).toBe('L-100');
+          expect(res.body.id).toBeDefined();
           expect(res.body.size).toBe('SMALL');
           expect(res.body.location).toBe('Building C, Basement');
           expect(res.body.status).toBe('AVAILABLE');
@@ -58,7 +58,7 @@ describe('Smart Package Locker System (e2e)', () => {
     it('should reject invalid locker size', () => {
       return request(app.getHttpServer())
         .post('/lockers')
-        .send({ id: 'L-100', size: 'EXTRA_LARGE', location: 'Test' })
+        .send({ size: 'EXTRA_LARGE', location: 'Test' })
         .expect(400);
     });
 
