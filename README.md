@@ -185,3 +185,24 @@ For a distributed system (multiple instances), this would be replaced with Redis
 - Storage charge and payment in responses
 - Concurrent delivery requests (no duplicate locker assignment)
 - Edge cases: full lockers, invalid codes, double retrieval, missing fields
+
+## AI Disclosure
+
+### Which AI tool(s) did you use?
+- Kiro (AI-powered IDE built on VS Code with Claude as the underlying model)
+
+### How did you use them?
+I used Kiro as a pair-programming partner throughout the development process. I made all architectural decisions, defined the requirements, and directed the implementation approach. The AI assisted with:
+- Scaffolding the initial project structure
+- Writing boilerplate code (DTOs, module wiring, repository implementations)
+- Generating unit and e2e test cases based on my requirements
+- Suggesting patterns (Strategy, Repository, Mutex) which I evaluated and approved
+
+### What portions of the solution were AI-assisted?
+- **Architecture & design decisions**: Mine — I decided on NestJS backend-only approach, the two-step retrieval flow, tiered pricing model, and concurrency handling
+- **Code implementation**: Collaborative — I described what I wanted, reviewed the output, and directed changes (e.g., "locker ID should be auto-generated not client-provided", "retrieval should show charge before opening locker", "payment failure should keep locker locked")
+- **Test coverage**: AI-generated based on my specified edge cases, reviewed and validated by me
+- **README**: AI-drafted based on my directions, I reviewed and adjusted the content
+
+### Workflow
+My approach was iterative: define a requirement → have AI implement it → review the output → request adjustments based on my judgment. For example, the AI initially implemented retrieval as a single step, but I identified that showing the charge *before* releasing the package made more business sense, so I directed the refactor to a two-step flow (check → confirm).
