@@ -1,17 +1,13 @@
-import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import type { ILockerRepository } from '../common/interfaces';
-import { LOCKER_REPOSITORY } from '../common/interfaces';
-import { Locker } from './entities/locker.entity';
 import { CreateLockerDto } from './dto/create-locker.dto';
+import { UpdateLockerDto } from './dto/update-locker.dto';
+import { LockersService } from './lockers.service';
 
 @ApiTags('Lockers')
 @Controller('lockers')
 export class LockersController {
-  constructor(
-    @Inject(LOCKER_REPOSITORY)
-    private readonly lockerRepository: ILockerRepository,
-  ) {}
+  constructor(private readonly lockersService: LockersService) {}
 
   @Get()
   @ApiOperation({
@@ -20,23 +16,41 @@ export class LockersController {
   })
   @ApiResponse({ status: 200, description: 'List of all lockers' })
   findAll() {
-    return this.lockerRepository.findAll().map((locker) => ({
-      id: locker.id,
-      size: locker.size,
-      location: locker.location,
-      status: locker.status,
-    }));
+    return this.lockersService.findAll();
   }
 
   @Post()
   @ApiOperation({
     summary: 'Create a new locker',
-    description: 'Adds a new locker to the system inventory',
+    description: 'Adds a new locker to the system. Locker ID is auto-generated.',
   })
   @ApiResponse({ status: 201, description: 'Locker created successfully' })
   create(@Body() dto: CreateLockerDto) {
-    const locker = new Locker(dto.id, dto.size, dto.location);
-    this.lockerRepository.save(locker);
-    return { id: locker.id, size: locker.size, location: locker.location, status: locker.status };
+    return this.lockersService.create(dto.size, dto.location);
+  }
+
+  @Patch(':id')
+  @ApiOperation({
+    summary: 'Update a locker',
+    description: 'Updates the size or location of a locker. Cannot update an occupied locker.',
+  })
+  @ApiResponse({ status: 200, description: 'Locker updated successfully' })
+  @ApiResponse({ status: 404, description: 'Locker not found' })
+  @ApiResponse({ status: 409, description: 'Locker is occupied and cannot be updated' })
+  update(@Param('id') id: string, @Body() dto: UpdateLockerDto) {
+    return this.lockersService.update(id, dto.size, dto.location);
+  }
+
+  @Delete(':id')
+  @HttpCode(200)
+  @ApiOperation({
+    summary: 'Remove a locker',
+    description: 'Removes a locker from the system. Cannot remove a locker that currently holds a package.',
+  })
+  @ApiResponse({ status: 200, description: 'Locker removed successfully' })
+  @ApiResponse({ status: 404, description: 'Locker not found' })
+  @ApiResponse({ status: 409, description: 'Locker is occupied and cannot be removed' })
+  remove(@Param('id') id: string) {
+    return this.lockersService.remove(id);
   }
 }

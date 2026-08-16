@@ -75,7 +75,7 @@ export class PackageRetrievalService {
       recipientName: pkg.recipientName,
       storedAt: pkg.storedAt,
       storageCharge,
-      message: `Storage charge: ${storageCharge.totalCharge} ${storageCharge.currency}. Please confirm to retrieve your package.`,
+      message: `Storage charge: ${storageCharge.totalCharge} ${storageCharge.currency}. Please pay and confirm to retrieve your package.`,
     };
   }
 

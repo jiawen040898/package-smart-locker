@@ -159,6 +159,14 @@ For a distributed system (multiple instances), this would be replaced with Redis
 - **Pickup code uniqueness**: Random generation without collision checking. With 32^6 (~1 billion) possibilities and few active packages, collision is negligible.
 - **Payment always succeeds in stub**: Keeps system predictable for testing. Failure handling is proven via unit tests with mocked failures.
 
+## Areas for Improvement (Given More Time)
+
+- **Persistent storage** — Replace in-memory repositories with a database (e.g., PostgreSQL) so data survives restarts.
+- **Authentication** — Add JWT-based auth with role guards to restrict endpoints by role (delivery agent vs customer vs admin).
+- **Real notification/payment providers** — Swap console stubs with actual integrations (e.g., Twilio for SMS, Stripe for payments).
+- **Configurable expiry** — Allow different expiry durations per locker station or package priority level.
+- **Auto-release expired packages** — A scheduled job to mark uncollected packages as expired, notify operations staff for physical retrieval, and free the locker for reuse.
+- **Containerization** — Add a Dockerfile for consistent deployment across environments.
 
 ## Test Coverage
 

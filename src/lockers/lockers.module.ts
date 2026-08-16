@@ -3,6 +3,7 @@ import { LOCKER_REPOSITORY, LOCKER_ALLOCATION_STRATEGY } from '../common/interfa
 import { InMemoryLockerRepository } from './repositories/in-memory-locker.repository';
 import { SmallestFitAllocationStrategy } from './strategies/smallest-fit-allocation.strategy';
 import { LockersController } from './lockers.controller';
+import { LockersService } from './lockers.service';
 
 const lockerRepositoryProvider = {
   provide: LOCKER_REPOSITORY,
@@ -16,7 +17,7 @@ const allocationStrategyProvider = {
 
 @Module({
   controllers: [LockersController],
-  providers: [lockerRepositoryProvider, allocationStrategyProvider],
+  providers: [lockerRepositoryProvider, allocationStrategyProvider, LockersService],
   exports: [lockerRepositoryProvider, allocationStrategyProvider],
 })
 export class LockersModule {}

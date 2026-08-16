@@ -9,4 +9,5 @@ export interface ILockerRepository {
   findAll(): Locker[];
   save(locker: Locker): Locker;
   updateStatus(id: string, status: LockerStatus): Locker | undefined;
+  remove(id: string): boolean;
 }

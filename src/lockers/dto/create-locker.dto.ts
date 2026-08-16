@@ -4,14 +4,6 @@ import { LockerSize } from '../../common/enums';
 
 export class CreateLockerDto {
   @ApiProperty({
-    description: 'Unique identifier for the locker',
-    example: 'L-001',
-  })
-  @IsString()
-  @IsNotEmpty()
-  id: string;
-
-  @ApiProperty({
     description: 'Size category of the locker',
     enum: LockerSize,
     example: LockerSize.MEDIUM,

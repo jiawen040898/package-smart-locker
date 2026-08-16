@@ -2,8 +2,8 @@ import { LockerSize, LockerStatus } from '../../common/enums';
 
 export class Locker {
   readonly id: string;
-  readonly size: LockerSize;
-  readonly location: string;
+  private _size: LockerSize;
+  private _location: string;
   private _status: LockerStatus;
 
   constructor(
@@ -13,9 +13,17 @@ export class Locker {
     status: LockerStatus = LockerStatus.AVAILABLE,
   ) {
     this.id = id;
-    this.size = size;
-    this.location = location;
+    this._size = size;
+    this._location = location;
     this._status = status;
+  }
+
+  get size(): LockerSize {
+    return this._size;
+  }
+
+  get location(): string {
+    return this._location;
   }
 
   get status(): LockerStatus {
@@ -32,5 +40,13 @@ export class Locker {
 
   release(): void {
     this._status = LockerStatus.AVAILABLE;
+  }
+
+  updateSize(size: LockerSize): void {
+    this._size = size;
+  }
+
+  updateLocation(location: string): void {
+    this._location = location;
   }
 }

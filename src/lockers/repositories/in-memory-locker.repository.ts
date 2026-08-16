@@ -38,4 +38,8 @@ export class InMemoryLockerRepository implements ILockerRepository {
 
     return locker;
   }
+
+  remove(id: string): boolean {
+    return this.lockers.delete(id);
+  }
 }
