@@ -19,5 +19,9 @@ export interface IPaymentService {
    * @param recipientName - Name of the customer being charged
    * @returns Payment result with transaction ID
    */
-  processPayment(amount: number, currency: string, recipientName: string): PaymentResult;
+  processPayment(
+    amount: number,
+    currency: string,
+    recipientName: string,
+  ): PaymentResult;
 }

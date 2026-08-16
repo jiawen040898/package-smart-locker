@@ -3,7 +3,10 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { DeliverPackageDto, RetrievePackageDto } from './dto';
 import type { DeliveryResult } from './services/package-delivery.service';
 import { PackageDeliveryService } from './services/package-delivery.service';
-import type { RetrievalCheckResult, RetrievalConfirmResult } from './services/package-retrieval.service';
+import type {
+  RetrievalCheckResult,
+  RetrievalConfirmResult,
+} from './services/package-retrieval.service';
 import { PackageRetrievalService } from './services/package-retrieval.service';
 
 @ApiTags('Packages')
@@ -32,7 +35,10 @@ export class PackagesController {
     description:
       'Customer provides locker ID and pickup code. System validates the request and returns the storage charge. The locker remains locked until confirmation.',
   })
-  @ApiResponse({ status: 201, description: 'Charge calculated — awaiting payment confirmation' })
+  @ApiResponse({
+    status: 201,
+    description: 'Charge calculated — awaiting payment confirmation',
+  })
   @ApiResponse({ status: 401, description: 'Invalid or expired pickup code' })
   @ApiResponse({ status: 404, description: 'Locker not found' })
   retrieveCheck(@Body() dto: RetrievePackageDto): RetrievalCheckResult {
@@ -45,7 +51,10 @@ export class PackagesController {
     description:
       'Customer confirms payment. The system processes payment, releases the package, and opens the locker.',
   })
-  @ApiResponse({ status: 201, description: 'Package retrieved and payment confirmed' })
+  @ApiResponse({
+    status: 201,
+    description: 'Package retrieved and payment confirmed',
+  })
   @ApiResponse({ status: 401, description: 'Invalid or expired pickup code' })
   @ApiResponse({ status: 402, description: 'Payment failed' })
   @ApiResponse({ status: 404, description: 'Locker not found' })

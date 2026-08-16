@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import type { IStorageChargeCalculator, StorageChargeBreakdown } from '../../common/interfaces';
+import type {
+  IStorageChargeCalculator,
+  StorageChargeBreakdown,
+} from '../../common/interfaces';
 
 interface PricingTier {
   label: string;
@@ -29,8 +32,16 @@ export class TieredStorageChargeCalculator implements IStorageChargeCalculator {
     this.currency = currency;
     this.tiers = [
       { label: 'Standard (Days 1-5)', maxDays: 5, ratePerDay: this.baseRate },
-      { label: 'Extended (Days 6-10)', maxDays: 10, ratePerDay: this.baseRate * 2 },
-      { label: 'Overdue (Days 11+)', maxDays: Infinity, ratePerDay: this.baseRate * 3 },
+      {
+        label: 'Extended (Days 6-10)',
+        maxDays: 10,
+        ratePerDay: this.baseRate * 2,
+      },
+      {
+        label: 'Overdue (Days 11+)',
+        maxDays: Infinity,
+        ratePerDay: this.baseRate * 3,
+      },
     ];
   }
 
@@ -44,9 +55,10 @@ export class TieredStorageChargeCalculator implements IStorageChargeCalculator {
     for (const tier of this.tiers) {
       if (remainingDays <= 0) break;
 
-      const tierCapacity = tier.maxDays === Infinity
-        ? remainingDays
-        : tier.maxDays - previousTierMax;
+      const tierCapacity =
+        tier.maxDays === Infinity
+          ? remainingDays
+          : tier.maxDays - previousTierMax;
 
       const daysInTier = Math.min(remainingDays, tierCapacity);
 

@@ -10,7 +10,11 @@ import type { IPaymentService, PaymentResult } from '../common/interfaces';
 export class ConsolePaymentService implements IPaymentService {
   private readonly logger = new Logger(ConsolePaymentService.name);
 
-  processPayment(amount: number, currency: string, recipientName: string): PaymentResult {
+  processPayment(
+    amount: number,
+    currency: string,
+    recipientName: string,
+  ): PaymentResult {
     const transactionId = `TXN-${randomUUID().slice(0, 8).toUpperCase()}`;
 
     this.logger.log(

@@ -1,6 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
-import type { ILockerRepository, IPackageRepository, ILockerAllocationStrategy, INotificationService } from '../../common/interfaces';
+import type {
+  ILockerRepository,
+  IPackageRepository,
+  ILockerAllocationStrategy,
+  INotificationService,
+} from '../../common/interfaces';
 import {
   LOCKER_REPOSITORY,
   PACKAGE_REPOSITORY,
@@ -58,21 +63,32 @@ export class PackageDeliveryService {
    *
    * @throws LockerNotAvailableException if no suitable locker is available
    */
-  async deliver(packageSize: LockerSize, recipientName: string): Promise<DeliveryResult> {
+  async deliver(
+    packageSize: LockerSize,
+    recipientName: string,
+  ): Promise<DeliveryResult> {
     // Critical section: allocation + occupation must be atomic
     await this.allocationMutex.acquire();
 
-    let selectedLocker;
+    let selectedLocker: ReturnType<typeof this.allocationStrategy.allocate>;
     try {
-      const availableLockers = this.lockerRepository.findAll().filter((l) => l.isAvailable);
-      selectedLocker = this.allocationStrategy.allocate(packageSize, availableLockers);
+      const availableLockers = this.lockerRepository
+        .findAll()
+        .filter((l) => l.isAvailable);
+      selectedLocker = this.allocationStrategy.allocate(
+        packageSize,
+        availableLockers,
+      );
 
       if (!selectedLocker) {
         throw new LockerNotAvailableException(packageSize);
       }
 
       // Mark as occupied while still holding the lock
-      this.lockerRepository.updateStatus(selectedLocker.id, LockerStatus.OCCUPIED);
+      this.lockerRepository.updateStatus(
+        selectedLocker.id,
+        LockerStatus.OCCUPIED,
+      );
     } finally {
       this.allocationMutex.release();
     }

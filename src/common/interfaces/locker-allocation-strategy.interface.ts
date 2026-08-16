@@ -14,5 +14,8 @@ export interface ILockerAllocationStrategy {
    * @param availableLockers - List of available lockers to choose from
    * @returns The selected locker, or undefined if no suitable locker is found
    */
-  allocate(packageSize: LockerSize, availableLockers: Locker[]): Locker | undefined;
+  allocate(
+    packageSize: LockerSize,
+    availableLockers: Locker[],
+  ): Locker | undefined;
 }

@@ -29,7 +29,9 @@ export class Package {
     this.pickupCode = params.pickupCode;
     this.status = PackageStatus.STORED;
     this.storedAt = new Date();
-    this.expiresAt = this.calculateExpiry(params.expiryHours ?? DEFAULT_EXPIRY_HOURS);
+    this.expiresAt = this.calculateExpiry(
+      params.expiryHours ?? DEFAULT_EXPIRY_HOURS,
+    );
     this.retrievedAt = null;
   }
 

@@ -1,5 +1,8 @@
 import { Module } from '@nestjs/common';
-import { LOCKER_REPOSITORY, LOCKER_ALLOCATION_STRATEGY } from '../common/interfaces';
+import {
+  LOCKER_REPOSITORY,
+  LOCKER_ALLOCATION_STRATEGY,
+} from '../common/interfaces';
 import { InMemoryLockerRepository } from './repositories/in-memory-locker.repository';
 import { SmallestFitAllocationStrategy } from './strategies/smallest-fit-allocation.strategy';
 import { LockersController } from './lockers.controller';
@@ -17,7 +20,11 @@ const allocationStrategyProvider = {
 
 @Module({
   controllers: [LockersController],
-  providers: [lockerRepositoryProvider, allocationStrategyProvider, LockersService],
+  providers: [
+    lockerRepositoryProvider,
+    allocationStrategyProvider,
+    LockersService,
+  ],
   exports: [lockerRepositoryProvider, allocationStrategyProvider],
 })
 export class LockersModule {}

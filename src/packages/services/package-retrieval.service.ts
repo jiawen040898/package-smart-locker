@@ -1,12 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { ILockerRepository, IPackageRepository, IStorageChargeCalculator, IPaymentService, StorageChargeBreakdown, PaymentResult } from '../../common/interfaces';
+import type {
+  ILockerRepository,
+  IPackageRepository,
+  IStorageChargeCalculator,
+  IPaymentService,
+  StorageChargeBreakdown,
+  PaymentResult,
+} from '../../common/interfaces';
 import {
   LOCKER_REPOSITORY,
   PACKAGE_REPOSITORY,
   STORAGE_CHARGE_CALCULATOR,
   PAYMENT_SERVICE,
 } from '../../common/interfaces';
-import { LockerStatus, PackageStatus } from '../../common/enums';
+import { LockerStatus } from '../../common/enums';
 import {
   InvalidPickupException,
   LockerNotFoundException,

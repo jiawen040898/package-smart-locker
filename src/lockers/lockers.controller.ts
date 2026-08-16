@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateLockerDto } from './dto/create-locker.dto';
 import { UpdateLockerDto } from './dto/update-locker.dto';
@@ -22,7 +31,8 @@ export class LockersController {
   @Post()
   @ApiOperation({
     summary: 'Create a new locker',
-    description: 'Adds a new locker to the system. Locker ID is auto-generated.',
+    description:
+      'Adds a new locker to the system. Locker ID is auto-generated.',
   })
   @ApiResponse({ status: 201, description: 'Locker created successfully' })
   create(@Body() dto: CreateLockerDto) {
@@ -32,11 +42,15 @@ export class LockersController {
   @Patch(':id')
   @ApiOperation({
     summary: 'Update a locker',
-    description: 'Updates the size or location of a locker. Cannot update an occupied locker.',
+    description:
+      'Updates the size or location of a locker. Cannot update an occupied locker.',
   })
   @ApiResponse({ status: 200, description: 'Locker updated successfully' })
   @ApiResponse({ status: 404, description: 'Locker not found' })
-  @ApiResponse({ status: 409, description: 'Locker is occupied and cannot be updated' })
+  @ApiResponse({
+    status: 409,
+    description: 'Locker is occupied and cannot be updated',
+  })
   update(@Param('id') id: string, @Body() dto: UpdateLockerDto) {
     return this.lockersService.update(id, dto.size, dto.location);
   }
@@ -45,11 +59,15 @@ export class LockersController {
   @HttpCode(200)
   @ApiOperation({
     summary: 'Remove a locker',
-    description: 'Removes a locker from the system. Cannot remove a locker that currently holds a package.',
+    description:
+      'Removes a locker from the system. Cannot remove a locker that currently holds a package.',
   })
   @ApiResponse({ status: 200, description: 'Locker removed successfully' })
   @ApiResponse({ status: 404, description: 'Locker not found' })
-  @ApiResponse({ status: 409, description: 'Locker is occupied and cannot be removed' })
+  @ApiResponse({
+    status: 409,
+    description: 'Locker is occupied and cannot be removed',
+  })
   remove(@Param('id') id: string) {
     return this.lockersService.remove(id);
   }

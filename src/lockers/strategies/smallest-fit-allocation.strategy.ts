@@ -15,7 +15,10 @@ import { Locker } from '../entities/locker.entity';
  */
 @Injectable()
 export class SmallestFitAllocationStrategy implements ILockerAllocationStrategy {
-  allocate(packageSize: LockerSize, availableLockers: Locker[]): Locker | undefined {
+  allocate(
+    packageSize: LockerSize,
+    availableLockers: Locker[],
+  ): Locker | undefined {
     const packageSizeOrder = LOCKER_SIZE_ORDER[packageSize];
 
     const suitableLockers = availableLockers

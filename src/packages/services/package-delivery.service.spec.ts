@@ -1,6 +1,11 @@
 import { PackageDeliveryService } from './package-delivery.service';
 import { PickupCodeService } from './pickup-code.service';
-import type { ILockerRepository, IPackageRepository, ILockerAllocationStrategy, INotificationService } from '../../common/interfaces';
+import type {
+  ILockerRepository,
+  IPackageRepository,
+  ILockerAllocationStrategy,
+  INotificationService,
+} from '../../common/interfaces';
 import { LockerSize, LockerStatus } from '../../common/enums';
 import { Locker } from '../../lockers/entities/locker.entity';
 import { LockerNotAvailableException } from '../../common/exceptions';
@@ -42,7 +47,7 @@ describe('PackageDeliveryService', () => {
 
     pickupCodeService = {
       generate: jest.fn(),
-    } as any;
+    };
 
     service = new PackageDeliveryService(
       lockerRepository,
@@ -54,7 +59,11 @@ describe('PackageDeliveryService', () => {
   });
 
   it('should successfully deliver a package to the allocated locker', async () => {
-    const availableLocker = new Locker('L-001', LockerSize.SMALL, defaultLocation);
+    const availableLocker = new Locker(
+      'L-001',
+      LockerSize.SMALL,
+      defaultLocation,
+    );
     lockerRepository.findAll.mockReturnValue([availableLocker]);
     allocationStrategy.allocate.mockReturnValue(availableLocker);
     pickupCodeService.generate.mockReturnValue('ABC123');
@@ -73,7 +82,11 @@ describe('PackageDeliveryService', () => {
   });
 
   it('should mark the locker as occupied after delivery', async () => {
-    const availableLocker = new Locker('L-001', LockerSize.MEDIUM, defaultLocation);
+    const availableLocker = new Locker(
+      'L-001',
+      LockerSize.MEDIUM,
+      defaultLocation,
+    );
     lockerRepository.findAll.mockReturnValue([availableLocker]);
     allocationStrategy.allocate.mockReturnValue(availableLocker);
     pickupCodeService.generate.mockReturnValue('XYZ789');
@@ -88,7 +101,11 @@ describe('PackageDeliveryService', () => {
   });
 
   it('should send notification to customer after successful delivery', async () => {
-    const availableLocker = new Locker('L-001', LockerSize.LARGE, 'Building B, Level 2');
+    const availableLocker = new Locker(
+      'L-001',
+      LockerSize.LARGE,
+      'Building B, Level 2',
+    );
     lockerRepository.findAll.mockReturnValue([availableLocker]);
     allocationStrategy.allocate.mockReturnValue(availableLocker);
     pickupCodeService.generate.mockReturnValue('NOTIFY');
@@ -106,7 +123,11 @@ describe('PackageDeliveryService', () => {
   });
 
   it('should save the package to the repository', async () => {
-    const availableLocker = new Locker('L-001', LockerSize.LARGE, defaultLocation);
+    const availableLocker = new Locker(
+      'L-001',
+      LockerSize.LARGE,
+      defaultLocation,
+    );
     lockerRepository.findAll.mockReturnValue([availableLocker]);
     allocationStrategy.allocate.mockReturnValue(availableLocker);
     pickupCodeService.generate.mockReturnValue('DEF456');
@@ -125,9 +146,9 @@ describe('PackageDeliveryService', () => {
     lockerRepository.findAll.mockReturnValue([]);
     allocationStrategy.allocate.mockReturnValue(undefined);
 
-    await expect(service.deliver(LockerSize.LARGE, 'Test User')).rejects.toThrow(
-      LockerNotAvailableException,
-    );
+    await expect(
+      service.deliver(LockerSize.LARGE, 'Test User'),
+    ).rejects.toThrow(LockerNotAvailableException);
   });
 
   it('should not send notification when delivery fails', async () => {
@@ -144,9 +165,17 @@ describe('PackageDeliveryService', () => {
   });
 
   it('should only consider available lockers', async () => {
-    const occupiedLocker = new Locker('L-001', LockerSize.SMALL, defaultLocation);
+    const occupiedLocker = new Locker(
+      'L-001',
+      LockerSize.SMALL,
+      defaultLocation,
+    );
     occupiedLocker.occupy();
-    const availableLocker = new Locker('L-002', LockerSize.MEDIUM, defaultLocation);
+    const availableLocker = new Locker(
+      'L-002',
+      LockerSize.MEDIUM,
+      defaultLocation,
+    );
 
     lockerRepository.findAll.mockReturnValue([occupiedLocker, availableLocker]);
     allocationStrategy.allocate.mockReturnValue(availableLocker);
@@ -155,10 +184,9 @@ describe('PackageDeliveryService', () => {
 
     await service.deliver(LockerSize.SMALL, 'Test');
 
-    expect(allocationStrategy.allocate).toHaveBeenCalledWith(
-      LockerSize.SMALL,
-      [availableLocker],
-    );
+    expect(allocationStrategy.allocate).toHaveBeenCalledWith(LockerSize.SMALL, [
+      availableLocker,
+    ]);
   });
 
   describe('concurrency', () => {
@@ -205,7 +233,11 @@ describe('PackageDeliveryService', () => {
     });
 
     it('should reject excess concurrent requests when lockers are limited', async () => {
-      const singleLocker = new Locker('L-001', LockerSize.SMALL, defaultLocation);
+      const singleLocker = new Locker(
+        'L-001',
+        LockerSize.SMALL,
+        defaultLocation,
+      );
 
       lockerRepository.findAll.mockImplementation(() => [singleLocker]);
       allocationStrategy.allocate.mockImplementation((_size, available) => {
@@ -232,7 +264,7 @@ describe('PackageDeliveryService', () => {
       expect(rejected).toHaveLength(2);
 
       rejected.forEach((r) => {
-        expect((r as PromiseRejectedResult).reason).toBeInstanceOf(LockerNotAvailableException);
+        expect(r.reason).toBeInstanceOf(LockerNotAvailableException);
       });
     });
   });

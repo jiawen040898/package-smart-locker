@@ -35,7 +35,12 @@ export class LockersService {
     const id = this.generateLockerId();
     const locker = new Locker(id, size, location);
     this.lockerRepository.save(locker);
-    return { id: locker.id, size: locker.size, location: locker.location, status: locker.status };
+    return {
+      id: locker.id,
+      size: locker.size,
+      location: locker.location,
+      status: locker.status,
+    };
   }
 
   update(id: string, size?: LockerSize, location?: string): LockerResponse {
@@ -60,7 +65,12 @@ export class LockersService {
       locker.updateLocation(location);
     }
 
-    return { id: locker.id, size: locker.size, location: locker.location, status: locker.status };
+    return {
+      id: locker.id,
+      size: locker.size,
+      location: locker.location,
+      status: locker.status,
+    };
   }
 
   remove(id: string): { message: string } {

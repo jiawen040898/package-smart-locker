@@ -1,5 +1,8 @@
 import { Module } from '@nestjs/common';
-import { PACKAGE_REPOSITORY, STORAGE_CHARGE_CALCULATOR } from '../common/interfaces';
+import {
+  PACKAGE_REPOSITORY,
+  STORAGE_CHARGE_CALCULATOR,
+} from '../common/interfaces';
 import { InMemoryPackageRepository } from './repositories/in-memory-package.repository';
 import { TieredStorageChargeCalculator } from './strategies/tiered-storage-charge.calculator';
 import { PickupCodeService } from './services/pickup-code.service';

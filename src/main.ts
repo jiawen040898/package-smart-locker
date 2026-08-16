@@ -35,4 +35,4 @@ async function bootstrap() {
   console.log('Swagger UI available at http://localhost:3000/api');
 }
 
-bootstrap();
+void bootstrap();

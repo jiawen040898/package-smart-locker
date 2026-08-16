@@ -1,5 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
-import type { INotificationService, PickupNotificationPayload } from '../common/interfaces';
+import type {
+  INotificationService,
+  PickupNotificationPayload,
+} from '../common/interfaces';
 
 /**
  * Stub implementation of INotificationService that logs to the console.

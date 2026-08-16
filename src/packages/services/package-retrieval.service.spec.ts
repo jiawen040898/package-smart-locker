@@ -1,9 +1,17 @@
 import { PackageRetrievalService } from './package-retrieval.service';
-import type { ILockerRepository, IPackageRepository, IStorageChargeCalculator, IPaymentService } from '../../common/interfaces';
+import type {
+  ILockerRepository,
+  IPackageRepository,
+  IStorageChargeCalculator,
+  IPaymentService,
+} from '../../common/interfaces';
 import { LockerSize, LockerStatus, PackageStatus } from '../../common/enums';
 import { Locker } from '../../lockers/entities/locker.entity';
 import { Package } from '../entities/package.entity';
-import { InvalidPickupException, LockerNotFoundException } from '../../common/exceptions';
+import {
+  InvalidPickupException,
+  LockerNotFoundException,
+} from '../../common/exceptions';
 
 describe('PackageRetrievalService', () => {
   let service: PackageRetrievalService;
@@ -17,7 +25,9 @@ describe('PackageRetrievalService', () => {
     totalCharge: 4,
     currency: 'MYR',
     daysStored: 2,
-    breakdown: [{ tier: 'Standard (Days 1-5)', days: 2, ratePerDay: 2, subtotal: 4 }],
+    breakdown: [
+      { tier: 'Standard (Days 1-5)', days: 2, ratePerDay: 2, subtotal: 4 },
+    ],
   };
   const mockPaymentResult = {
     success: true,
